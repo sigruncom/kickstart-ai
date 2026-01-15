@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Management - SOMBA® AI Kickstart Coach</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#CC0000",
+                        "matte-black": "#131313",
+                        "dark-sidebar": "#0F0F0F",
+                        "dark-border": "#2A2A2A",
+                        "dark-surface": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Geist Sans", "Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+            }
+        }
+        .active-nav {
+            background-color: rgba(204, 0, 0, 0.15);
+            color: #FFFFFF !important;
+            border-left: 2px solid #CC0000;
+        }
+        .active-nav .material-symbols-outlined {
+            color: #CC0000 !important;
+            font-variation-settings: 'FILL' 1;
+        }
+        .table-row-hover:hover {
+            background-color: #1E1E1E;
+        }
+        .selected-row {
+            background-color: rgba(204, 0, 0, 0.08) !important;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444444;
+        }
+        input[type="checkbox"] {
+            @apply rounded border-zinc-700 bg-zinc-800 text-primary focus:ring-primary/20 size-3.5;
+        }
+    </style>
+</head>
+<body class="bg-matte-black font-display text-zinc-100 antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<aside class="w-64 bg-dark-sidebar flex flex-col shrink-0 border-r border-dark-border">
+<div class="p-6 flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-500">SOMBA® AI</span>
+<h1 class="text-2xl font-bold tracking-tight text-white leading-none">Kickstart Coach</h1>
+</div>
+<nav class="flex-1 px-3 mt-4 space-y-0.5">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-zinc-400 hover:bg-zinc-800/50 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-[13px] font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded active-nav transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-[13px] font-medium">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-zinc-400 hover:bg-zinc-800/50 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bar_chart</span>
+<span class="text-[13px] font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-zinc-400 hover:bg-zinc-800/50 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-[13px] font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-dark-border">
+<button class="flex w-full items-center gap-3 px-3 py-1.5 text-[13px] font-medium text-zinc-500 hover:text-white transition-all">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                Logout
+            </button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-matte-black">
+<header class="h-12 flex items-center justify-end px-6 bg-dark-surface shrink-0 border-b border-dark-border">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-zinc-700 bg-transparent text-zinc-400 hover:bg-zinc-800 hover:text-white transition-all group">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span class="text-[11px] font-medium">Switch to Student View</span>
+</button>
+<div class="h-4 w-px bg-zinc-700"></div>
+<button class="p-1 rounded hover:bg-zinc-800 text-zinc-400">
+<span class="material-symbols-outlined text-[18px]">dark_mode</span>
+</button>
+<div class="h-4 w-px bg-zinc-700"></div>
+<div class="flex items-center gap-2 cursor-pointer group">
+<span class="text-[11px] font-medium text-zinc-400 group-hover:text-white transition-colors">Admin User</span>
+<div class="size-6 rounded-full bg-zinc-800 bg-cover bg-center border border-zinc-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhEUMJycRkD0vBfSiaEc3VJuQFQGdmFCBSkv_bEp-ozS67EfEwjt2z8KDjk-OVEeFoCZCc2bukc0csVlWFE78vdmRZlntxOnCYPIR3WrOQbzgk1FiNmi4GliiF-MLhkpfHAoVEcCJ3NoItlbaWUXgDzLydusyv6XXa1TR1qAcf9SLDZXZbL0QBXdf7ImP8kQviZn61msNZr6VG2_EQqpgLK5_WoWTqVGLm9wXkZGaMClFJNGivMlZxHmbberWe1NwDV7Ase9zwmaVI')"></div>
+<span class="material-symbols-outlined text-zinc-500 text-[16px]">expand_more</span>
+</div>
+</div>
+</header>
+<div class="px-6 py-4 bg-matte-black border-b border-dark-border shrink-0">
+<div class="flex flex-col gap-1 mb-4">
+<nav class="flex items-center gap-1.5 text-[10px] text-zinc-500 uppercase tracking-wider font-medium">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-zinc-300">User Management</span>
+</nav>
+<div class="flex items-center gap-3">
+<h2 class="text-xl font-medium text-white tracking-tight">User Management</h2>
+<span class="px-2 py-0.5 bg-zinc-800 text-zinc-400 rounded-full text-[10px] font-medium uppercase tracking-tight border border-dark-border">128 Students</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 flex-1">
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500 text-[16px]">search</span>
+<input class="w-full pl-8 pr-3 py-1.5 text-[12px] bg-zinc-900 border-zinc-700 rounded-md focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-zinc-500 text-zinc-100 transition-all" placeholder="Search students..." type="text"/>
+</div>
+<div class="h-4 w-px bg-dark-border mx-1"></div>
+<button class="px-3 py-1.5 rounded-md border border-zinc-700 bg-zinc-900 text-zinc-300 text-[11px] font-medium hover:bg-zinc-800 transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                        Export 5 Selected
+                    </button>
+<button class="text-[11px] text-zinc-500 hover:text-zinc-300 font-medium transition-colors">
+                        Clear Selection
+                    </button>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-md border border-zinc-700 bg-zinc-900 text-zinc-300 text-[11px] font-medium hover:bg-zinc-800 flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-[16px]">upload</span>
+                        Upload CSV
+                    </button>
+<button class="px-3.5 py-1.5 rounded-md bg-primary text-white text-[11px] font-medium hover:bg-red-700 flex items-center gap-1.5 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+                        Create User
+                    </button>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-hidden relative">
+<div class="absolute inset-0 overflow-y-auto">
+<table class="w-full text-left border-collapse table-fixed">
+<thead class="sticky top-0 z-30">
+<tr class="bg-dark-surface border-b border-dark-border">
+<th class="w-12 px-6 py-2.5">
+<input checked="" class="cursor-pointer" type="checkbox"/>
+</th>
+<th class="w-[25%] px-2 py-2.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Student Name</th>
+<th class="w-[25%] px-6 py-2.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Email Address</th>
+<th class="w-[15%] px-6 py-2.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider text-center">Date Joined</th>
+<th class="w-[15%] px-6 py-2.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider text-center">Expiration Date</th>
+<th class="w-[10%] px-6 py-2.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-border">
+<script>
+                            const names = ["Jane Doe", "Marcus Smith", "Anna Lindberg", "Hiroshi Kobayashi", "Alex Bennett", "Amy Crane", "Andrew Proctor", "Bianca Rose", "Björn Salvador", "Catherine Lee", "David Chen", "Elena Rodriguez", "Fiona Gallagher", "George Miller", "Hannah Abbott", "Ian Wright", "Julia Roberts", "Kevin Hart", "Linda Evans", "Michael Scott", "Nina Simone", "Oscar Isaac", "Peter Parker", "Quinn Fabray", "Rachel Green", "Steve Rogers", "Tony Stark", "Bruce Wayne", "Clark Kent", "Diana Prince"];
+                            const emails = ["jane.doe@example.com", "m.smith@somba.ai", "anna.l@icloud.com", "hiro@design.jp", "alex.b@hotmail.com", "amy@socialmarketing.com", "andrew.p@live.co.uk", "bianca@somba.ai", "bjorn.s@gmail.com", "c.lee@somba.ai", "d.chen@tech.com", "elena.r@global.net", "fiona@gallagher.ie", "george@millers.com", "hannah@somba.ai", "ian.w@outlook.com", "julia.r@acting.com", "k.hart@comedy.org", "linda@evans.com", "m.scott@dundermifflin.com", "nina@soul.com", "oscar@isaac.net", "peter@dailybugle.com", "quinn@cheer.com", "rachel@ralphlauren.com", "s.rogers@avengers.com", "t.stark@stark.com", "b.wayne@wayne.com", "c.kent@dailyplanet.com", "d.prince@themyscira.com"];
+                            const datesJoined = ["Oct 12, 2023", "Oct 15, 2023", "Nov 01, 2023", "Nov 05, 2023", "Nov 10, 2023", "Nov 12, 2023", "Nov 15, 2023", "Nov 18, 2023", "Nov 20, 2023", "Nov 25, 2023", "Dec 01, 2023", "Dec 05, 2023", "Dec 10, 2023", "Dec 12, 2023", "Dec 15, 2023", "Dec 18, 2023", "Dec 20, 2023", "Dec 25, 2023", "Jan 01, 2024", "Jan 05, 2024", "Jan 10, 2024", "Jan 12, 2024", "Jan 15, 2024", "Jan 18, 2024", "Jan 20, 2024", "Jan 25, 2024", "Feb 01, 2024", "Feb 05, 2024", "Feb 10, 2024", "Feb 12, 2024"];
+                            const expiryDates = ["Oct 12, 2024", "Oct 15, 2024", "Nov 01, 2024", "Nov 05, 2024", "Nov 10, 2024", "Nov 12, 2024", "Nov 15, 2024", "Nov 18, 2024", "Nov 20, 2024", "Nov 25, 2024", "Dec 01, 2024", "Dec 05, 2024", "Dec 10, 2024", "Dec 12, 2024", "Dec 15, 2024", "Dec 18, 2024", "Dec 20, 2024", "Dec 25, 2024", "Jan 01, 2025", "Jan 05, 2025", "Jan 10, 2025", "Jan 12, 2025", "Jan 15, 2025", "Jan 18, 2025", "Jan 20, 2025", "Jan 25, 2025", "Feb 01, 2025", "Feb 05, 2025", "Feb 10, 2025", "Feb 12, 2025"];
+                            document.write(names.map((name, i) => `
+                                <tr class="table-row-hover transition-colors group ${i < 5 ? 'selected-row' : ''}">
+                                    <td class="px-6 py-1.5">
+                                        <input type="checkbox" class="cursor-pointer" ${i < 5 ? 'checked' : ''} />
+                                    </td>
+                                    <td class="px-2 py-1.5 whitespace-nowrap">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="size-6 shrink-0 rounded bg-zinc-800 flex items-center justify-center text-[10px] font-medium text-zinc-400 border border-zinc-700 uppercase">
+                                                ${name.split(' ').map(n => n[0]).join('')}
+                                            </div>
+                                            <span class="text-[12px] font-medium text-zinc-200 truncate">${name}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-1.5 text-[12px] text-zinc-400 whitespace-nowrap truncate">${emails[i]}</td>
+                                    <td class="px-6 py-1.5 text-[11px] text-zinc-400 whitespace-nowrap text-center">${datesJoined[i]}</td>
+                                    <td class="px-6 py-1.5 text-[11px] text-zinc-400 whitespace-nowrap text-center">${expiryDates[i]}</td>
+                                    <td class="px-6 py-1.5 text-right whitespace-nowrap">
+                                        <div class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button class="p-1 text-zinc-500 hover:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-[18px]">edit</span>
+                                            </button>
+                                            <button class="p-1 text-zinc-500 hover:text-white transition-colors">
+                                                <span class="material-symbols-outlined text-[18px]">more_horiz</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join(''));
+                        </script>
+</tbody>
+</table>
+</div>
+</div>
+<footer class="h-9 flex items-center justify-between px-6 bg-dark-surface border-t border-dark-border shrink-0 z-40">
+<span class="text-[10px] text-zinc-500 font-medium uppercase tracking-wider">Showing 1-30 of 128 members</span>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<button class="size-6 flex items-center justify-center rounded border border-zinc-700 bg-zinc-900 text-zinc-500 disabled:opacity-30 hover:bg-zinc-800 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<div class="flex items-center gap-1 text-[11px] font-medium">
+<span class="text-zinc-200">1</span>
+<span class="text-zinc-600">/</span>
+<span class="text-zinc-500">5</span>
+</div>
+<button class="size-6 flex items-center justify-center rounded border border-zinc-700 bg-zinc-900 text-zinc-500 hover:bg-zinc-800 transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</footer>
+</main>
+</div>
+
+</body></html>

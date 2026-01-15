@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Management - SOMBA® AI Kickstart Coach</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#CC0000",
+                        "sidebar-light": "#F2F3F4",
+                        "matte-black": "#131313",
+                    },
+                    fontFamily: {
+                        "display": ["Geist Sans", "Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+            }
+        }
+        .active-nav {
+            background-color: rgba(204, 0, 0, 0.05);
+            color: #CC0000 !important;
+        }
+        .active-nav .material-symbols-outlined {
+            color: #CC0000 !important;
+            font-variation-settings: 'FILL' 1;
+        }
+        .table-row-hover:hover {
+            background-color: #f8fafc;
+        }
+        .selected-row {
+            background-color: #fff1f1 !important;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1;
+        }
+        input[type="checkbox"] {
+            @apply rounded border-slate-300 text-primary focus:ring-primary/20 size-3.5;
+        }
+        .text-xxs {
+            font-size: 0.65rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-display text-slate-900 antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<aside class="w-64 bg-sidebar-light flex flex-col shrink-0 border-r border-slate-200">
+<div class="p-6 flex flex-col">
+<span class="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 mb-0.5">SOMBA® AI</span>
+<h1 class="text-2xl font-bold tracking-tight text-matte-black leading-none">Kickstart Coach</h1>
+</div>
+<nav class="flex-1 px-3 mt-4 space-y-0.5">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-700 hover:bg-slate-200/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-[13px] font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded active-nav transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-[13px] font-medium">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-700 hover:bg-slate-200/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bar_chart</span>
+<span class="text-[13px] font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-700 hover:bg-slate-200/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-[13px] font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200">
+<button class="flex w-full items-center gap-3 px-3 py-1.5 text-[13px] font-medium text-slate-500 hover:text-matte-black transition-all">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                Logout
+            </button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-white">
+<header class="h-12 flex items-center justify-end px-6 bg-white shrink-0 border-b border-slate-100">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all group">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span class="text-[11px] font-medium">Switch to Student View</span>
+</button>
+<div class="h-4 w-px bg-slate-200"></div>
+<button class="p-1 rounded hover:bg-slate-100 text-slate-500">
+<span class="material-symbols-outlined text-[18px]">light_mode</span>
+</button>
+<div class="h-4 w-px bg-slate-200"></div>
+<div class="flex items-center gap-2 cursor-pointer group">
+<span class="text-[11px] font-medium text-slate-600 group-hover:text-primary transition-colors">Admin User</span>
+<div class="size-6 rounded-full bg-slate-200 bg-cover bg-center border border-slate-200" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC6qauwly108pmRcJezZzLLEk1JhdZm7WGnHaKwiYGL-Vb_8bvWGYRD1uzad4t3I-jXfy3PjQy_nxOvB-0vbaQvpGwuM6qlNcjvKN7YP8iyRwBghK8mOgtg3hAEzJAHzYli9U413WQ-6FKMhih1Gk-jPC25EJkUaWa0aayGCgY5tanO5f6IR9yPHXPlvnDJJ1M8nknhMzXX2IUDLo9fxNpsiy7L49gb3TlQBHu5pOV5iBLy5kYlnCiZ9w3dPV0YCwl_rHnbglIhNKvm')"></div>
+<span class="material-symbols-outlined text-slate-400 text-[16px]">expand_more</span>
+</div>
+</div>
+</header>
+<div class="px-6 py-4 bg-white border-b border-slate-200 shrink-0">
+<div class="flex flex-col gap-1 mb-4">
+<nav class="flex items-center gap-1.5 text-[10px] text-slate-400 uppercase tracking-wider font-medium">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-slate-600">User Management</span>
+</nav>
+<div class="flex items-center gap-3">
+<h2 class="text-xl font-medium text-matte-black tracking-tight">User Management</h2>
+<span class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-[10px] font-medium uppercase tracking-tight">128 Students</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 flex-1">
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[16px]">search</span>
+<input class="w-full pl-8 pr-3 py-1.5 text-[12px] border-slate-200 rounded-md focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-400 transition-all" placeholder="Search users..." type="text"/>
+</div>
+<div class="h-4 w-px bg-slate-200 mx-1"></div>
+<button class="px-3 py-1.5 rounded-md border border-slate-200 bg-white text-slate-700 text-[11px] font-medium hover:bg-slate-50 transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                        Export Selected
+                    </button>
+<button class="text-[11px] text-slate-400 hover:text-slate-600 font-medium transition-colors">
+                        Clear Selection
+                    </button>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-md border border-slate-200 bg-white text-slate-700 text-[11px] font-medium hover:bg-slate-50 flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-[16px]">upload</span>
+                        Upload CSV
+                    </button>
+<button class="px-3.5 py-1.5 rounded-md bg-primary text-white text-[11px] font-medium hover:opacity-90 flex items-center gap-1.5 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+                        Create User
+                    </button>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-hidden relative">
+<div class="absolute inset-0 overflow-y-auto">
+<table class="w-full text-left border-collapse table-fixed">
+<thead class="sticky top-0 z-30">
+<tr class="bg-slate-50 border-b border-slate-200">
+<th class="w-10 px-4 py-2">
+<input checked="" class="cursor-pointer" type="checkbox"/>
+</th>
+<th class="w-[20%] px-2 py-2 text-xxs font-semibold text-slate-500 uppercase tracking-wider">Student</th>
+<th class="w-[22%] px-2 py-2 text-xxs font-semibold text-slate-500 uppercase tracking-wider">Email Address</th>
+<th class="w-[10%] px-2 py-2 text-xxs font-semibold text-slate-500 uppercase tracking-wider">Role</th>
+<th class="w-[12%] px-2 py-2 text-xxs font-semibold text-slate-500 uppercase tracking-wider text-center">Date Joined</th>
+<th class="w-[12%] px-2 py-2 text-xxs font-semibold text-slate-500 uppercase tracking-wider text-center">Expiration</th>
+<th class="w-[12%] px-2 py-2 text-xxs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+<th class="w-[8%] px-4 py-2 text-xxs font-semibold text-slate-500 uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<script>
+                            const names = ["Jane Doe", "Marcus Smith", "Anna Lindberg", "Hiroshi Kobayashi", "Alex Bennett", "Amy Crane", "Andrew Proctor", "Bianca Rose", "Björn Salvador", "Catherine Lee", "David Chen", "Elena Rodriguez", "Fiona Gallagher", "George Miller", "Hannah Abbott", "Ian Wright", "Julia Roberts", "Kevin Hart", "Linda Evans", "Michael Scott", "Nina Simone", "Oscar Isaac", "Peter Parker", "Quinn Fabray", "Rachel Green", "Steve Rogers", "Tony Stark", "Bruce Wayne", "Clark Kent", "Diana Prince"];
+                            const emails = ["jane.doe@example.com", "m.smith@somba.ai", "anna.l@icloud.com", "hiro@design.jp", "alex.b@hotmail.com", "amy@socialmarketing.com", "andrew.p@live.co.uk", "bianca@somba.ai", "bjorn.s@gmail.com", "c.lee@somba.ai", "d.chen@tech.com", "elena.r@global.net", "fiona@gallagher.ie", "george@millers.com", "hannah@somba.ai", "ian.w@outlook.com", "julia.r@acting.com", "k.hart@comedy.org", "linda@evans.com", "m.scott@dundermifflin.com", "nina@soul.com", "oscar@isaac.net", "peter@dailybugle.com", "quinn@cheer.com", "rachel@ralphlauren.com", "s.rogers@avengers.com", "t.stark@stark.com", "b.wayne@wayne.com", "c.kent@dailyplanet.com", "d.prince@themyscira.com"];
+                            const roles = ["Admin", "Student", "Coach", "Student", "Admin", "Student", "Student", "Coach", "Student", "Student", "Admin", "Student", "Coach", "Student", "Student", "Admin", "Student", "Student", "Coach", "Admin", "Student", "Student", "Student", "Coach", "Student", "Admin", "Coach", "Admin", "Student", "Coach"];
+                            const statuses = ["Active", "Active", "Deactivated", "Pending", "Active", "Deactivated", "Active", "Active", "Deactivated", "Active", "Active", "Pending", "Active", "Deactivated", "Active", "Active", "Active", "Pending", "Active", "Active", "Deactivated", "Active", "Active", "Active", "Active", "Active", "Active", "Active", "Active", "Pending"];
+                            const dates = ["Oct 12, 2023", "Oct 15, 2023", "Sep 28, 2023", "Nov 02, 2023", "Oct 20, 2023"];
+                            const expDates = ["Oct 12, 2024", "Oct 15, 2024", "Sep 28, 2024", "Nov 02, 2024", "Oct 20, 2024"];
+                            document.write(names.map((name, i) => `
+                                <tr class="table-row-hover transition-colors group ${i < 5 ? 'selected-row' : ''}">
+                                    <td class="px-4 py-1">
+                                        <input type="checkbox" class="cursor-pointer" ${i < 5 ? 'checked' : ''} />
+                                    </td>
+                                    <td class="px-2 py-1 whitespace-nowrap">
+                                        <div class="flex items-center gap-2">
+                                            <div class="size-5 shrink-0 rounded bg-slate-100 flex items-center justify-center text-[9px] font-bold text-slate-500 border border-slate-200 uppercase">
+                                                ${name.split(' ').map(n => n[0]).join('')}
+                                            </div>
+                                            <span class="text-[12px] font-medium text-slate-800 truncate">${name}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-1 text-[11px] text-slate-500 whitespace-nowrap truncate">${emails[i]}</td>
+                                    <td class="px-2 py-1 text-[11px] text-slate-600 whitespace-nowrap font-medium">${roles[i]}</td>
+                                    <td class="px-2 py-1 text-[11px] text-slate-500 whitespace-nowrap text-center">${dates[i % 5]}</td>
+                                    <td class="px-2 py-1 text-[11px] text-slate-500 whitespace-nowrap text-center">${expDates[i % 5]}</td>
+                                    <td class="px-2 py-1 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                                            statuses[i] === 'Active' ? 'text-green-700 bg-green-50/50 border border-green-100' : 
+                                            statuses[i] === 'Pending' ? 'text-amber-700 bg-amber-50/50 border border-amber-100' : 
+                                            'text-slate-400 bg-slate-50 border border-slate-100'
+                                        }">${statuses[i]}</span>
+                                    </td>
+                                    <td class="px-4 py-1 text-right whitespace-nowrap">
+                                        <div class="flex justify-end gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button class="p-1 text-slate-400 hover:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">edit</span>
+                                            </button>
+                                            <button class="p-1 text-slate-400 hover:text-slate-600 transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">more_horiz</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join(''));
+                        </script>
+</tbody>
+</table>
+</div>
+</div>
+<footer class="h-9 flex items-center justify-between px-6 bg-slate-50 border-t border-slate-200 shrink-0 z-40">
+<span class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Showing 1-30 of 128 members</span>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<button class="size-6 flex items-center justify-center rounded border border-slate-200 bg-white text-slate-400 disabled:opacity-30 hover:bg-slate-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<div class="flex items-center gap-1 text-[11px] font-medium">
+<span class="text-slate-900">1</span>
+<span class="text-slate-300">/</span>
+<span class="text-slate-500">5</span>
+</div>
+<button class="size-6 flex items-center justify-center rounded border border-slate-200 bg-white text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</footer>
+</main>
+</div>
+
+</body></html>
