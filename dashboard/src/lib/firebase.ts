@@ -12,9 +12,14 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+import { getAuth } from 'firebase/auth';
+
+// ... existing imports ...
+
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const functions = getFunctions(app);
+export const auth = getAuth(app);
 
 // Use emulators in development if needed
 // if (window.location.hostname === "localhost") {
