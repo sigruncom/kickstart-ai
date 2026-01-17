@@ -12,6 +12,7 @@ export interface User {
     expirationDate: string;
     status: UserStatus;
     photoUrl?: string;
+    accessDurationDays?: number;
 }
 
 export interface UserUpdateParams {
@@ -21,4 +22,5 @@ export interface UserUpdateParams {
     status?: UserStatus;
     cohort?: string;
     expirationDate?: string;
+    accessDurationDays?: number;
 }

@@ -18,7 +18,7 @@ export const updateUser = async (userId: string, updates: UserUpdateParams) => {
     }
 };
 
-export const createUser = async (userData: { firstName: string; lastName: string; email: string; cohort: string; role: UserRole }) => {
+export const createUser = async (userData: { firstName: string; lastName: string; email: string; cohort: string; role: UserRole, accessDurationDays?: number, expirationDate?: string }) => {
     const createUserFunc = httpsCallable<{ userData: typeof userData }, { id: string }>(functions, 'createUser');
     try {
         const result = await createUserFunc({ userData });

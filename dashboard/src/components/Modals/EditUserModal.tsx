@@ -18,6 +18,9 @@ export function EditUserModal({ isOpen, onClose, user, onSuccess }: EditUserModa
     const [status, setStatus] = useState<UserStatus>('active');
     const [expirationDate, setExpirationDate] = useState('');
 
+    // Duration state for quick calculation
+    const [duration, setDuration] = useState<string>('');
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -30,8 +33,35 @@ export function EditUserModal({ isOpen, onClose, user, onSuccess }: EditUserModa
             setRole(user.role || 'student');
             setStatus(user.status || 'active');
             setExpirationDate(user.expirationDate || '');
+            // We don't necessarily set duration from user data as it's a derived/action field,
+            // unless we want to show existing duration if we stored it. 
+            // For now, leave blank to allow "adding" duration or manually setting date.
+            setDuration('');
         }
     }, [user]);
+
+    // When duration changes, update expiration date based on TODAY (or maybe User's Join Date? 
+    // User requested: "calculate the expirationDate by adding the accessDurationDays to the joinDate")
+    // If editing, we should probably add to the *original* join date if possible, OR just from now.
+    // Given the prompt "calculate... to the joinDate", I will try to use user.dateJoined.
+    useEffect(() => {
+        if (duration && !isNaN(Number(duration)) && user?.dateJoined) {
+            const days = parseInt(duration);
+            const joinDate = new Date(user.dateJoined); // Assuming format allows parsing
+            if (!isNaN(joinDate.getTime())) {
+                joinDate.setDate(joinDate.getDate() + days);
+                setExpirationDate(joinDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }));
+            }
+        }
+    }, [duration, user?.dateJoined]);
+
+    // Clear expiration if role is admin
+    useEffect(() => {
+        if (role === 'admin') {
+            setExpirationDate('');
+        }
+    }, [role]);
+
 
     if (!isOpen || !user) return null;
 
@@ -40,6 +70,10 @@ export function EditUserModal({ isOpen, onClose, user, onSuccess }: EditUserModa
         setLoading(true);
         setError('');
 
+        // If admin, force no expiration
+        const finalExpirationDate = role === 'admin' ? '' : expirationDate;
+        const finalAccessDuration = duration ? parseInt(duration) : undefined;
+
         try {
             await updateUser(user.id, {
                 firstName,
@@ -47,7 +81,8 @@ export function EditUserModal({ isOpen, onClose, user, onSuccess }: EditUserModa
                 role,
                 status,
                 cohort,
-                expirationDate
+                expirationDate: finalExpirationDate,
+                accessDurationDays: finalAccessDuration
             });
             onSuccess();
             onClose();
@@ -57,6 +92,10 @@ export function EditUserModal({ isOpen, onClose, user, onSuccess }: EditUserModa
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleQuickSelect = (days: number) => {
+        setDuration(days.toString());
     };
 
     return (
@@ -135,6 +174,37 @@ export function EditUserModal({ isOpen, onClose, user, onSuccess }: EditUserModa
                             </select>
                         </div>
                     </div>
+
+                    {role !== 'admin' && (
+                        <div className="flex flex-col gap-2 p-3 bg-slate-50 dark:bg-zinc-800/50 rounded-md border border-slate-100 dark:border-zinc-800">
+                            <div className="flex justify-between items-end">
+                                <label className="text-[12px] font-medium text-slate-700 dark:text-zinc-300">Access Duration</label>
+                                <span className="text-[10px] text-slate-400">Join Date: {user.dateJoined}</span>
+                            </div>
+
+                            <div className="flex gap-2">
+                                <input
+                                    type="number"
+                                    className="w-24 px-3 py-1.5 text-sm rounded-md border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-1 focus:ring-primary text-slate-900 dark:text-white"
+                                    placeholder="Days"
+                                    value={duration}
+                                    onChange={(e) => setDuration(e.target.value)}
+                                />
+                                <div className="flex gap-1.5">
+                                    {[90, 180, 365].map(d => (
+                                        <button
+                                            key={d}
+                                            type="button"
+                                            onClick={() => handleQuickSelect(d)}
+                                            className="px-2 py-1 text-xs font-medium bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400"
+                                        >
+                                            {d}d
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="flex gap-4">
                         <div className="flex-1 flex flex-col gap-1.5">
