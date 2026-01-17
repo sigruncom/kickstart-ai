@@ -5,10 +5,12 @@ import { db } from '../lib/firebase';
 import { mockUsers } from '../lib/mockData';
 import { UserRow } from './UserTable/UserRow';
 import { seedUsers } from '../lib/seed';
+import { CreateUserModal } from './Modals/CreateUserModal';
 
 export function UserManagement() {
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     useEffect(() => {
         // Subscribe to real-time updates
@@ -107,7 +109,10 @@ export function UserManagement() {
                             <span className="material-symbols-outlined text-[16px]">database</span>
                             Seed Data
                         </button>
-                        <button className="px-3.5 py-1.5 rounded-md bg-primary text-white text-[11px] font-medium hover:opacity-90 dark:hover:bg-red-700 flex items-center gap-1.5 transition-all shadow-sm">
+                        <button
+                            onClick={() => setIsCreateModalOpen(true)}
+                            className="px-3.5 py-1.5 rounded-md bg-primary text-white text-[11px] font-medium hover:opacity-90 dark:hover:bg-red-700 flex items-center gap-1.5 transition-all shadow-sm"
+                        >
                             <span className="material-symbols-outlined text-[16px]">person_add</span>
                             Create User
                         </button>
@@ -129,7 +134,8 @@ export function UserManagement() {
                                     />
                                 </th>
                                 <th className="w-[20%] dark:w-[25%] px-2 py-2 dark:py-2.5 text-xxs dark:text-[10px] font-semibold text-slate-500 dark:text-zinc-500 uppercase tracking-wider">Student Name</th>
-                                <th className="w-[22%] dark:w-[25%] px-2 py-2 dark:px-6 dark:py-2.5 text-xxs dark:text-[10px] font-semibold text-slate-500 dark:text-zinc-500 uppercase tracking-wider">Email Address</th>
+                                <th className="w-[20%] dark:w-[20%] px-2 py-2 dark:px-6 dark:py-2.5 text-xxs dark:text-[10px] font-semibold text-slate-500 dark:text-zinc-500 uppercase tracking-wider">Email Address</th>
+                                <th className="w-[10%] px-2 py-2 text-xxs dark:text-[10px] font-semibold text-slate-500 dark:text-zinc-500 uppercase tracking-wider">Cohort</th>
                                 <th className="w-[10%] px-2 py-2 text-xxs dark:text-[10px] font-semibold text-slate-500 dark:text-zinc-500 uppercase tracking-wider">Role</th>
                                 <th className="w-[12%] dark:w-[15%] px-2 py-2 dark:px-6 dark:py-2.5 text-xxs dark:text-[10px] font-semibold text-slate-500 dark:text-zinc-500 uppercase tracking-wider text-center">Date Joined</th>
                                 <th className="w-[12%] dark:w-[15%] px-2 py-2 dark:px-6 dark:py-2.5 text-xxs dark:text-[10px] font-semibold text-slate-500 dark:text-zinc-500 uppercase tracking-wider text-center">Expiration</th>
@@ -171,6 +177,15 @@ export function UserManagement() {
                     </div>
                 </div>
             </footer>
+
+            <CreateUserModal
+                isOpen={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                onSuccess={() => {
+                    // Refresh data or show toast - for now standard firestore listener handles update
+                    console.log("User created!");
+                }}
+            />
         </>
     );
 }

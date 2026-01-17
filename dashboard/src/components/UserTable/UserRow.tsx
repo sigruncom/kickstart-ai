@@ -94,6 +94,9 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
             <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap truncate">
                 {user?.email || ''}
             </td>
+            <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap truncate">
+                {user?.cohort || '-'}
+            </td>
             <td className="px-2 py-1 text-[11px] text-slate-600 dark:text-zinc-400 whitespace-nowrap font-medium">
                 <button
                     onClick={handleRoleClick}

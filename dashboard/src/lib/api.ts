@@ -18,6 +18,17 @@ export const updateUser = async (userId: string, updates: { role?: UserRole; sta
     }
 };
 
+export const createUser = async (userData: { name: string; email: string; cohort: string; role: UserRole }) => {
+    const createUserFunc = httpsCallable<{ userData: typeof userData }, { id: string }>(functions, 'createUser');
+    try {
+        const result = await createUserFunc({ userData });
+        return result.data;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        throw error;
+    }
+};
+
 // Helper to cycle roles for the demo
 export const getNextRole = (current: UserRole): UserRole => {
     switch (current) {

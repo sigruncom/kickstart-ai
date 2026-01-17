@@ -8,6 +8,7 @@ export interface User {
     name: string; // New field for full name
     email: string;
     role: UserRole;
+    cohort?: string; // Optional for now
     dateJoined: string;
     expirationDate: string;
     status: UserStatus;
