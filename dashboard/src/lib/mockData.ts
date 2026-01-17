@@ -12,6 +12,7 @@ export const mockUsers: User[] = names.map((name, i) => {
     const last = rest.join(' ');
     return {
         id: `user-${i}`,
+        name: name,
         firstName: first,
         lastName: last,
         email: emails[i],

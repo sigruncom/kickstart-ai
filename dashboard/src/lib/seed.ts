@@ -30,13 +30,16 @@ export const seedUsers = async () => {
             // Default Dates (formatted string strictly for display as per current setup)
             // ideally we use Timestamps, but keeping it simple for string compatibility first
             if (!data.dateJoined) {
-                updates.dateJoined = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                updates.dateJoined = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
             }
 
             if (!data.expirationDate) {
-                const nextMonth = new Date();
-                nextMonth.setDate(nextMonth.getDate() + 30);
-                updates.expirationDate = nextMonth.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                updates.expirationDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+            }
+
+            // Default Role
+            if (!data.role) {
+                updates.role = 'Student';
             }
 
             // Only update if changes are needed

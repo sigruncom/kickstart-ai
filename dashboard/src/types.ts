@@ -3,8 +3,8 @@ export type UserStatus = 'Active' | 'Pending' | 'Deactivated';
 
 export interface User {
     id: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     name: string; // New field for full name
     email: string;
     role: UserRole;
