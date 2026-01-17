@@ -49,9 +49,15 @@ export function UserManagement() {
         setSelectedUsers(newSelected);
     };
 
+    // Safe data handling: Check if users is populated
+    if (!users || users.length === 0) {
+        return <div className="p-8 text-center text-slate-500 dark:text-zinc-400">Loading students...</div>;
+    }
+
     return (
         <>
             <div className="px-6 py-4 bg-white dark:bg-matte-black border-b border-slate-200 dark:border-dark-border shrink-0 transition-colors duration-200">
+                {/* ... header content ... */}
                 <div className="flex flex-col gap-1 mb-4">
                     <nav className="flex items-center gap-1.5 text-[10px] text-slate-400 dark:text-zinc-500 uppercase tracking-wider font-medium">
                         <a className="hover:text-primary transition-colors" href="#">Home</a>
@@ -61,7 +67,7 @@ export function UserManagement() {
                     <div className="flex items-center gap-3">
                         <h2 className="text-xl font-medium text-matte-black dark:text-white tracking-tight">User Management</h2>
                         <span className="px-2 py-0.5 bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400 rounded-full text-[10px] font-medium uppercase tracking-tight border border-transparent dark:border-dark-border">
-                            {users.length} Students
+                            {users?.length} Students
                         </span>
                     </div>
                 </div>
@@ -110,7 +116,7 @@ export function UserManagement() {
                                     <input
                                         type="checkbox"
                                         className="cursor-pointer"
-                                        checked={users.length > 0 && selectedUsers.size === users.length}
+                                        checked={users?.length > 0 && selectedUsers.size === users?.length}
                                         onChange={toggleSelectAll}
                                     />
                                 </th>
@@ -124,7 +130,7 @@ export function UserManagement() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-dark-border">
-                            {users.map(user => (
+                            {users?.map(user => (
                                 <UserRow
                                     key={user.id}
                                     user={user}

@@ -12,6 +12,9 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+// Debug: Check if API Key is loaded (Do not expose full key in prod logs ideally, but helpful for debugging)
+console.log("Firebase API Key Loaded:", !!firebaseConfig.apiKey);
+
 import { getAuth } from 'firebase/auth';
 
 // ... existing imports ...
