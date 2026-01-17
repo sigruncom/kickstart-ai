@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { User, UserStatus } from '../../types';
 import { getNextRole, getNextStatus, updateUser } from '../../lib/api';
-import { cn, getInitials } from '../../lib/utils';
+import { cn } from '../../lib/utils';
 
 interface UserRowProps {
     user: User;
@@ -65,8 +65,10 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
     };
 
     // Calculate initials safely
-    const displayName = user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim();
-    const initials = getInitials(displayName);
+    // Calculate display name and avatar letter
+    // Priority: name -> email -> 'U' (Unknown)
+    const displayName = user?.name || user?.email || 'Unknown User';
+    const avatarLetter = (displayName[0] || '?').toUpperCase();
 
     return (
         <tr className={cn(
@@ -84,10 +86,10 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
             <td className="px-2 py-1 whitespace-nowrap">
                 <div className="flex items-center gap-2">
                     <div className="size-5 shrink-0 rounded bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-[9px] font-bold text-slate-500 dark:text-zinc-400 border border-slate-200 dark:border-zinc-700 uppercase">
-                        {initials}
+                        {avatarLetter}
                     </div>
                     <span className="text-[12px] font-medium text-slate-800 dark:text-zinc-200 truncate">
-                        {user?.name || `${user?.firstName} ${user?.lastName}`}
+                        {displayName}
                     </span>
                 </div>
             </td>
