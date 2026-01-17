@@ -1,13 +1,13 @@
 import { httpsCallable } from 'firebase/functions';
 import { functions } from './firebase';
-import type { UserRole, UserStatus } from '../types';
+import type { UserRole, UserStatus, UserUpdateParams } from '../types';
 
 interface ManageUserRoleResponse {
     message: string;
 }
 
-export const updateUser = async (userId: string, updates: { role?: UserRole; status?: UserStatus }) => {
-    const manageUserRole = httpsCallable<{ targetUserId: string, updates: typeof updates }, ManageUserRoleResponse>(functions, 'manageUserRole');
+export const updateUser = async (userId: string, updates: UserUpdateParams) => {
+    const manageUserRole = httpsCallable<{ targetUserId: string, updates: UserUpdateParams }, ManageUserRoleResponse>(functions, 'manageUserRole');
 
     try {
         const result = await manageUserRole({ targetUserId: userId, updates });

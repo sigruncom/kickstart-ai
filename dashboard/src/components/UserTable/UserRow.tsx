@@ -7,9 +7,10 @@ interface UserRowProps {
     user: User;
     selected: boolean;
     onToggleSelect: () => void;
+    onEdit: () => void;
 }
 
-export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
+export function UserRow({ user, selected, onToggleSelect, onEdit }: UserRowProps) {
     const [status, setStatus] = useState(user.status);
     const [role, setRole] = useState(user.role);
     const [loading, setLoading] = useState(false);
@@ -131,7 +132,10 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
                     >
                         {status === 'active' ? 'Deactivate' : 'Activate'}
                     </button>
-                    <button className="p-1 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-white transition-colors">
+                    <button
+                        onClick={onEdit}
+                        className="p-1 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-white transition-colors"
+                    >
                         <span className="material-symbols-outlined text-[16px]">more_horiz</span>
                     </button>
                 </div>

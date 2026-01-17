@@ -15,6 +15,10 @@ export interface User {
 }
 
 export interface UserUpdateParams {
+    firstName?: string;
+    lastName?: string;
     role?: UserRole;
     status?: UserStatus;
+    cohort?: string;
+    expirationDate?: string;
 }

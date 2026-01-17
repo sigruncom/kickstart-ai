@@ -6,11 +6,13 @@ import { mockUsers } from '../lib/mockData';
 import { UserRow } from './UserTable/UserRow';
 import { seedUsers } from '../lib/seed';
 import { CreateUserModal } from './Modals/CreateUserModal';
+import { EditUserModal } from './Modals/EditUserModal';
 
 export function UserManagement() {
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [editingUser, setEditingUser] = useState<User | null>(null);
 
     useEffect(() => {
         // Subscribe to real-time updates
@@ -150,6 +152,7 @@ export function UserManagement() {
                                     user={user}
                                     selected={selectedUsers.has(user.id)}
                                     onToggleSelect={() => toggleSelectUser(user.id)}
+                                    onEdit={() => setEditingUser(user)}
                                 />
                             ))}
                         </tbody>
@@ -184,6 +187,15 @@ export function UserManagement() {
                 onSuccess={() => {
                     // Refresh data or show toast - for now standard firestore listener handles update
                     console.log("User created!");
+                }}
+            />
+
+            <EditUserModal
+                isOpen={!!editingUser}
+                user={editingUser}
+                onClose={() => setEditingUser(null)}
+                onSuccess={() => {
+                    console.log("User updated!");
                 }}
             />
         </>
