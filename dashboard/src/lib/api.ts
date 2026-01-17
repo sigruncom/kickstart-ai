@@ -32,18 +32,18 @@ export const createUser = async (userData: { firstName: string; lastName: string
 // Helper to cycle roles for the demo
 export const getNextRole = (current: UserRole): UserRole => {
     switch (current) {
-        case 'Student': return 'Coach';
-        case 'Coach': return 'Admin';
-        case 'Admin': return 'Student';
-        default: return 'Student';
+        case 'student': return 'coach';
+        case 'coach': return 'admin';
+        case 'admin': return 'student';
+        default: return 'student';
     }
 };
 
 export const getNextStatus = (current: UserStatus): UserStatus => {
     switch (current) {
-        case 'Active': return 'Deactivated';
-        case 'Deactivated': return 'Active'; // Pending -> Active?
-        case 'Pending': return 'Active';
-        default: return 'Active';
+        case 'active': return 'inactive';
+        case 'inactive': return 'active';
+        case 'pending': return 'active';
+        default: return 'active';
     }
 };

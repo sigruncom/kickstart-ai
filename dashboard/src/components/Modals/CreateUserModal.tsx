@@ -13,7 +13,7 @@ export function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUserModalP
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [cohort, setCohort] = useState('');
-    const [role, setRole] = useState<UserRole>('Student');
+    const [role, setRole] = useState<UserRole>('student');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -33,7 +33,7 @@ export function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUserModalP
             setLastName('');
             setEmail('');
             setCohort('');
-            setRole('Student');
+            setRole('student');
         } catch (err: any) {
             console.error(err);
             setError(err.message || 'Failed to create user');
@@ -110,13 +110,13 @@ export function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUserModalP
                         <div className="flex-1 flex flex-col gap-1.5">
                             <label className="text-[12px] font-medium text-slate-700 dark:text-zinc-300">Role</label>
                             <select
-                                className="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-1 focus:ring-primary focus:border-primary text-slate-900 dark:text-white"
+                                className="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-1 focus:ring-primary focus:border-primary text-slate-900 dark:text-white capitalize"
                                 value={role}
                                 onChange={(e) => setRole(e.target.value as UserRole)}
                             >
-                                <option value="Student">Student</option>
-                                <option value="Coach">Coach</option>
-                                <option value="Admin">Admin</option>
+                                <option value="student">Student</option>
+                                <option value="coach">Coach</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
                     </div>

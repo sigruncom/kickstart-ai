@@ -47,18 +47,13 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
     // Status Badge Styles
     // Status Badge Styles
     const getStatusStyles = (s: UserStatus) => {
-        // Normalize status for styling check in case of case mismatch, though types enforce Capitalized
-        const status = s || 'Deactivated';
+        const status = (s || 'inactive').toLowerCase();
         switch (status) {
-            case 'Active':
-            case 'active' as any:
+            case 'active':
                 return 'text-green-700 bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400';
-            case 'Pending':
-            case 'pending' as any:
+            case 'pending':
                 return 'text-amber-700 bg-amber-50 border border-amber-200 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-400';
-            case 'Deactivated':
-            case 'deactivated' as any:
-                return 'text-slate-500 bg-slate-100 border border-slate-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400';
+            case 'inactive':
             default:
                 return 'text-slate-500 bg-slate-100 border border-slate-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400';
         }
@@ -98,40 +93,43 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
                 {user?.email || ''}
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap truncate">
-                {user?.cohort || '-'}
+                {user.role === 'admin' ? '—' : (user.cohort || '-')}
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-600 dark:text-zinc-400 whitespace-nowrap font-medium">
                 <button
                     onClick={handleRoleClick}
                     disabled={loading}
-                    className="hover:underline focus:outline-none"
+                    className="hover:underline focus:outline-none capitalize"
                     title="Click to toggle role"
                 >
                     {role}
                 </button>
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap text-center">
-                {user?.dateJoined}
+                {user.dateJoined}
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap text-center">
-                {user?.expirationDate}
+                {user.role === 'admin' ? 'N/A' : user.expirationDate}
             </td>
             <td className="px-2 py-1 whitespace-nowrap">
-                <button
-                    onClick={handleStatusClick}
-                    disabled={loading}
+                <span
                     className={cn(
-                        "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium transition-colors hover:opacity-80",
+                        "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium capitalization",
                         getStatusStyles(status)
                     )}
                 >
                     {status}
-                </button>
+                </span>
             </td>
             <td className="px-4 py-1 text-right whitespace-nowrap">
-                <div className="flex justify-end gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="p-1 text-slate-400 hover:text-primary dark:text-zinc-500 dark:hover:text-primary transition-colors">
-                        <span className="material-symbols-outlined text-[16px]">edit</span>
+                <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                        onClick={handleStatusClick}
+                        disabled={loading}
+                        className="px-2 py-0.5 rounded border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[10px] font-medium text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700 transition-colors"
+                        title="Toggle Status"
+                    >
+                        {status === 'active' ? 'Deactivate' : 'Activate'}
                     </button>
                     <button className="p-1 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-white transition-colors">
                         <span className="material-symbols-outlined text-[16px]">more_horiz</span>
