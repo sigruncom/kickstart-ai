@@ -77,7 +77,7 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
                         {initials}
                     </div>
                     <span className="text-[12px] font-medium text-slate-800 dark:text-zinc-200 truncate">
-                        {user?.firstName} {user?.lastName}
+                        {user?.name || `${user?.firstName} ${user?.lastName}`}
                     </span>
                 </div>
             </td>

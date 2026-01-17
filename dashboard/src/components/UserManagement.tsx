@@ -4,6 +4,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { mockUsers } from '../lib/mockData';
 import { UserRow } from './UserTable/UserRow';
+import { seedUsers } from '../lib/seed';
 
 export function UserManagement() {
     const [users, setUsers] = useState<User[]>([]);
@@ -98,6 +99,13 @@ export function UserManagement() {
                         <button className="px-3.5 py-1.5 rounded-md border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 text-[11px] font-medium hover:bg-slate-50 dark:hover:bg-zinc-800 flex items-center gap-1.5 transition-all">
                             <span className="material-symbols-outlined text-[16px]">upload</span>
                             Upload CSV
+                        </button>
+                        <button
+                            onClick={() => { if (confirm('Run data seeding? This will update existing users.')) seedUsers(); }}
+                            className="px-3.5 py-1.5 rounded-md border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-[11px] font-medium hover:bg-amber-100 dark:hover:bg-amber-900/30 flex items-center gap-1.5 transition-all"
+                        >
+                            <span className="material-symbols-outlined text-[16px]">database</span>
+                            Seed Data
                         </button>
                         <button className="px-3.5 py-1.5 rounded-md bg-primary text-white text-[11px] font-medium hover:opacity-90 dark:hover:bg-red-700 flex items-center gap-1.5 transition-all shadow-sm">
                             <span className="material-symbols-outlined text-[16px]">person_add</span>

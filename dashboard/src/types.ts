@@ -5,12 +5,13 @@ export interface User {
     id: string;
     firstName: string;
     lastName: string;
+    name: string; // New field for full name
     email: string;
     role: UserRole;
-    dateJoined: string; // ISO string or formatted string? Using string for now matching HTML
+    dateJoined: string;
     expirationDate: string;
     status: UserStatus;
-    photoUrl?: string; // Derived from name in HTML, but good to have
+    photoUrl?: string;
 }
 
 export interface UserUpdateParams {
