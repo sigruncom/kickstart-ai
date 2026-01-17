@@ -9,7 +9,8 @@ interface CreateUserModalProps {
 }
 
 export function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUserModalProps) {
-    const [name, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [cohort, setCohort] = useState('');
     const [role, setRole] = useState<UserRole>('Student');
@@ -24,11 +25,12 @@ export function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUserModalP
         setError('');
 
         try {
-            await createUser({ name, email, cohort, role });
+            await createUser({ firstName, lastName, email, cohort, role });
             onSuccess();
             onClose();
             // Reset form
-            setName('');
+            setFirstName('');
+            setLastName('');
             setEmail('');
             setCohort('');
             setRole('Student');
@@ -57,16 +59,29 @@ export function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUserModalP
                         </div>
                     )}
 
-                    <div className="flex flex-col gap-1.5">
-                        <label className="text-[12px] font-medium text-slate-700 dark:text-zinc-300">Full Name</label>
-                        <input
-                            type="text"
-                            required
-                            className="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-1 focus:ring-primary focus:border-primary text-slate-900 dark:text-white"
-                            placeholder="e.g. John Doe"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
+                    <div className="flex gap-4">
+                        <div className="flex-1 flex flex-col gap-1.5">
+                            <label className="text-[12px] font-medium text-slate-700 dark:text-zinc-300">First Name</label>
+                            <input
+                                type="text"
+                                required
+                                className="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-1 focus:ring-primary focus:border-primary text-slate-900 dark:text-white"
+                                placeholder="e.g. John"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                            />
+                        </div>
+                        <div className="flex-1 flex flex-col gap-1.5">
+                            <label className="text-[12px] font-medium text-slate-700 dark:text-zinc-300">Last Name</label>
+                            <input
+                                type="text"
+                                required
+                                className="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-1 focus:ring-primary focus:border-primary text-slate-900 dark:text-white"
+                                placeholder="e.g. Doe"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                            />
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-1.5">

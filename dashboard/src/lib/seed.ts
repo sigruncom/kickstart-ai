@@ -15,12 +15,21 @@ export const seedUsers = async () => {
             const data = userDoc.data();
             const updates: any = {};
 
-            // Derived full name
-            if (!data.name) {
-                const firstName = data.firstName || 'Student';
-                const lastName = data.lastName || 'Name';
-                updates.name = `${firstName} ${lastName}`.trim();
+            // Ensure firstName and lastName exist
+            if (!updatedUser.firstName || !updatedUser.lastName) {
+                if (data.name) {
+                    const parts = data.name.split(' ');
+                    updatedUser.firstName = parts[0] || 'Student';
+                    updatedUser.lastName = parts.slice(1).join(' ') || 'Name';
+                } else if (!updatedUser.firstName) {
+                    updatedUser.firstName = 'Student';
+                } else if (!updatedUser.lastName) {
+                    updatedUser.lastName = 'Name';
+                }
             }
+
+            // Remove legacy 'name' field if we want to clean up, but for now we won't delete data
+            // Just ensuring firstName/lastName are populated.
 
             // Default Status
             if (!data.status) {
