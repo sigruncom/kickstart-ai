@@ -53,8 +53,10 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
         }
     };
 
-    // Calculate initials
-    const initials = (user.firstName[0] + (user.lastName[0] || '')).toUpperCase();
+    // Calculate initials safely
+    const firstName = user?.firstName || '';
+    const lastName = user?.lastName || '';
+    const initials = ((firstName?.[0] || '') + (lastName?.[0] || '')).toUpperCase();
 
     return (
         <tr className={cn(
@@ -75,12 +77,12 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
                         {initials}
                     </div>
                     <span className="text-[12px] font-medium text-slate-800 dark:text-zinc-200 truncate">
-                        {user.firstName} {user.lastName}
+                        {user?.firstName} {user?.lastName}
                     </span>
                 </div>
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap truncate">
-                {user.email}
+                {user?.email || ''}
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-600 dark:text-zinc-400 whitespace-nowrap font-medium">
                 <button
@@ -93,10 +95,10 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
                 </button>
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap text-center">
-                {user.dateJoined}
+                {user?.dateJoined}
             </td>
             <td className="px-2 py-1 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap text-center">
-                {user.expirationDate}
+                {user?.expirationDate}
             </td>
             <td className="px-2 py-1 whitespace-nowrap">
                 <button
