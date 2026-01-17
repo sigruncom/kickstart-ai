@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { User, UserStatus } from '../../types';
 import { getNextRole, getNextStatus, updateUser } from '../../lib/api';
-import { cn } from '../../lib/utils';
+import { cn, getInitials } from '../../lib/utils';
 
 interface UserRowProps {
     user: User;
@@ -45,18 +45,28 @@ export function UserRow({ user, selected, onToggleSelect }: UserRowProps) {
     };
 
     // Status Badge Styles
+    // Status Badge Styles
     const getStatusStyles = (s: UserStatus) => {
-        switch (s) {
-            case 'Active': return 'text-green-700 bg-green-50/50 border border-green-100';
-            case 'Pending': return 'text-amber-700 bg-amber-50/50 border border-amber-100';
-            default: return 'text-slate-400 bg-slate-50 border border-slate-100';
+        // Normalize status for styling check in case of case mismatch, though types enforce Capitalized
+        const status = s || 'Deactivated';
+        switch (status) {
+            case 'Active':
+            case 'active' as any:
+                return 'text-green-700 bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400';
+            case 'Pending':
+            case 'pending' as any:
+                return 'text-amber-700 bg-amber-50 border border-amber-200 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-400';
+            case 'Deactivated':
+            case 'deactivated' as any:
+                return 'text-slate-500 bg-slate-100 border border-slate-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400';
+            default:
+                return 'text-slate-500 bg-slate-100 border border-slate-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400';
         }
     };
 
     // Calculate initials safely
-    const firstName = user?.firstName || '';
-    const lastName = user?.lastName || '';
-    const initials = ((firstName?.[0] || '') + (lastName?.[0] || '')).toUpperCase();
+    const displayName = user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim();
+    const initials = getInitials(displayName);
 
     return (
         <tr className={cn(
